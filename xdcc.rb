@@ -4,17 +4,17 @@ class Helper
 	# bytes -> human readable size
 	def self.human_size(n, base = 8)
 		return "0" if n.nil?
-		
+
 		units = ["B", "KB", "MB", "GB"]
-	
+
 		unit = units[0]
 		size = n
-	
+
 		if (n.instance_of?String)
 			unit = n[-2, 2]
 			size = n[0..-2].to_f
 		end
-	
+
 		if ((size >= 1024 && base == 8) || (size >= 1000 && base == 10))
 			human_size((base==8?(size/1024):(size/1000)).to_s+units[units.index(unit)+1], base)
 		else
@@ -22,9 +22,9 @@ class Helper
 				return size.to_i.to_s+unit
 			else
 				index = size.to_s.index(".")
-				
+
 				return size.to_s[0..(index-1)]+unit if units.index(unit) < 2
-				
+
 				begin
 					return size.to_s[0..(index+2)]+unit
 				rescue
@@ -35,29 +35,30 @@ class Helper
 	end
 
 	def switch_output(log_path = nil)
-		if (log_path.nil?)
-			STDOUT.reopen("/dev/null", "w")
-		else
-			STDOUT.reopen(log_path, "w")
-		end
-		STDERR.reopen(STDOUT)
-		$stdout = STDOUT
-		$stderr = STDOUT
-		STDOUT.sync = true
+		#if (log_path.nil?)
+			#STDOUT.reopen("/dev/null", "w")
+		#else
+			#STDOUT.reopen(log_path, "w")
+		#end
+		#STDERR.reopen(STDOUT)
+		#$stdout = STDOUT
+		#$stderr = STDOUT
+		#STDOUT.sync = true
 
-		@stdout = IO.new(IO.sysopen("/dev/tty", "a+"))
-		@stdout.sync = true
+		#@stdout = IO.new(IO.sysopen("/dev/tty", "a+"))
+		#@stdout.sync = true
 	end
 
 	def puts(str)
-		@stdout.puts str
+		#@stdout.puts str
+        print str
 	end
 
 	def restore_output
-		STDOUT.reopen("/dev/tty")
-		STDOUT.sync = true
-		STDERR.reopen(STDOUT)
-		STDERR.sync = true
+		#STDOUT.reopen("/dev/tty")
+		#STDOUT.sync = true
+		#STDERR.reopen(STDOUT)
+		#STDERR.sync = true
 	end
 end
 
